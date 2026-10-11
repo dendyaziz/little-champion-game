@@ -82,12 +82,11 @@ export const HUD: React.FC<HUDProps> = ({
             )}
             {targetColor && (
               <div className="animate-wiggle">
-                <span
-                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-3 shadow-md inline-block"
-                  style={{
-                    backgroundColor: targetColor.hex,
-                    borderColor: targetColor.strokeHex || '#FFFFFF',
-                  }}
+                <ShapeSVG
+                  shape="circle"
+                  fill={targetColor.hex}
+                  stroke={targetColor.strokeHex}
+                  className="w-12 h-12 sm:w-14 sm:h-14"
                 />
               </div>
             )}
