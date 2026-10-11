@@ -204,11 +204,9 @@
 .home-menu > .home-toolbar, .home-menu > .mode-grid { flex-shrink: 0; }
 .home-menu > .mode-grid { margin-top: auto; margin-bottom: auto; }
 .parent-gate { min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: max(24px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left)); background: #fff; font-family: 'Fredoka', sans-serif; }
-.parent-gate-content { position: relative; width: min(100%, 440px); text-align: center; color: #292d35; --key-size: clamp(64px, 9dvh, 84px); --key-gap: 18px; }
+.parent-gate-content { position: relative; width: min(100%, 440px); padding-top: 52px; text-align: center; color: #292d35; --key-size: clamp(64px, 9dvh, 84px); --key-gap: 18px; }
 .parent-gate-close { position: absolute; top: 0; right: 0; width: 52px; height: 52px; display: grid; place-items: center; color: #298fc9; cursor: pointer; border-radius: 18px; }
 .parent-gate-close svg { width: 36px; height: 36px; stroke-width: 3; }
-.parent-gate-picture { margin: 0 auto 20px; width: 112px; height: 112px; display: grid; place-items: center; }
-.parent-gate-picture img { width: 100%; height: 100%; object-fit: contain; }
 .parent-gate h1 { font-size: clamp(26px, 5vw, 34px); font-weight: 600; line-height: 1.15; }
 .parent-gate p { margin-top: 18px; font-size: 19px; font-weight: 400; }
 .parent-challenge { display: flex; justify-content: center; gap: 12px; margin: 38px 0 32px; font-size: clamp(23px, 5vw, 30px); line-height: 1; font-weight: 600; }
@@ -220,11 +218,10 @@
 .parent-keypad button:active { transform: translateY(4px); box-shadow: 0 1px 0 #2878b2; }
 .parent-keypad button.parent-erase { background: #fa6778; box-shadow: 0 5px 0 #ce4b60; display: grid; place-items: center; }
 .parent-erase svg { width: 38px; height: 38px; }
-@media (max-height: 700px) { .parent-gate-picture { width: 64px; height: 64px; margin-bottom: 12px; } .parent-challenge { margin: 24px 0; } .parent-gate-content { --key-size: 60px; --key-gap: 14px; } }
+@media (max-height: 700px) { .parent-challenge { margin: 24px 0; } .parent-gate-content { padding-top: 44px; --key-size: 60px; --key-gap: 14px; } }
 @media (max-height: 600px) and (max-width: 600px) {
   .parent-gate { padding-top: max(12px, env(safe-area-inset-top)); padding-bottom: max(16px, env(safe-area-inset-bottom)); }
-  .parent-gate-content { --key-size: 56px; --key-gap: 12px; }
-  .parent-gate-picture { width: 48px; height: 48px; margin-bottom: 8px; }
+  .parent-gate-content { padding-top: 40px; --key-size: 56px; --key-gap: 12px; }
   .parent-gate h1 { font-size: 24px; }
   .parent-gate p { font-size: 16px; margin-top: 6px; }
   .parent-challenge { margin: 16px 0 12px; }

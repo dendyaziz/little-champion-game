@@ -31,7 +31,6 @@ export const ParentGate: React.FC<ParentGateProps> = ({ onUnlock, onCancel }) =>
     <main className="parent-gate">
       <section className="parent-gate-content" aria-labelledby="parent-gate-title">
         <button ref={closeRef} className="parent-gate-close" onClick={onCancel} aria-label="Back to games"><X /></button>
-        <div className="parent-gate-picture" aria-hidden="true"><img src="/images/parent-bears.webp" alt="" width="384" height="378" /></div>
         <h1 id="parent-gate-title">Are you a grown-up?</h1>
         <p>Tap the numbers written below</p>
         <div className="parent-challenge">{challenge.split('').map((digit, index) => <span key={index}>{DIGIT_WORDS[Number(digit)]}</span>)}</div>
