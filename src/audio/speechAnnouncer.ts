@@ -73,16 +73,14 @@ const LOCAL_AUDIO_MAP: Record<string, string> = {
   'oval': '/audio/shapes/oval.mp3',
 
   // Colors
-  'red': '/audio/colors/red.mp3',
   'blue': '/audio/colors/blue.mp3',
+  'red': '/audio/colors/red.mp3',
   'green': '/audio/colors/green.mp3',
+  'purple': '/audio/colors/purple.mp3',
   'yellow': '/audio/colors/yellow.mp3',
   'orange': '/audio/colors/orange.mp3',
-  'purple': '/audio/colors/purple.mp3',
-  'pink': '/audio/colors/pink.mp3',
-  'cyan': '/audio/colors/cyan.mp3',
-  'brown': '/audio/colors/brown.mp3',
-  'lime': '/audio/colors/lime.mp3',
+  'white': '/audio/colors/white.mp3',
+  'black': '/audio/colors/black.mp3',
 
   // Order Games Narrations
   "let's count from zero to eleven": '/audio/narrations/count-zero-to-eleven.mp3',

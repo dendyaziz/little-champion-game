@@ -422,6 +422,7 @@ export function generateRound(
           shadowColor: item.colorDef.shadowHex,
           textColor: item.colorDef.hex,
           colorHex: item.colorDef.hex,
+          strokeColor: item.colorDef.strokeHex,
         };
       });
 

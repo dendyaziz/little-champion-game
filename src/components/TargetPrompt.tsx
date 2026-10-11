@@ -75,6 +75,7 @@ export const TargetPrompt: React.FC<TargetPromptProps> = ({ roundData, onStart }
           <ShapeSVG
             shape="circle"
             fill={roundData.targetColor.hex}
+            stroke={roundData.targetColor.strokeHex}
             className="prompt-shape"
           />
         )}

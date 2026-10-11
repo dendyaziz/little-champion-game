@@ -17,6 +17,7 @@ export interface GameItem {
   textColor: string;
   shape?: ShapeType;
   colorHex?: string;
+  strokeColor?: string;
   isPopping?: boolean;
   isPopped?: boolean;
   isShaking?: boolean;
@@ -45,19 +46,18 @@ export interface ColorDefinition {
   name: string;
   hex: string;
   shadowHex: string;
+  strokeHex?: string;
 }
 
 export const COLORS: ColorDefinition[] = [
-  { id: 'red', name: 'Red', hex: '#EF4444', shadowHex: '#B91C1C' },
   { id: 'blue', name: 'Blue', hex: '#2563EB', shadowHex: '#1D4ED8' },
+  { id: 'red', name: 'Red', hex: '#EF4444', shadowHex: '#B91C1C' },
   { id: 'green', name: 'Green', hex: '#16A34A', shadowHex: '#15803D' },
+  { id: 'purple', name: 'Purple', hex: '#9333EA', shadowHex: '#7E22CE' },
   { id: 'yellow', name: 'Yellow', hex: '#EAB308', shadowHex: '#CA8A04' },
   { id: 'orange', name: 'Orange', hex: '#FF6B00', shadowHex: '#EA580C' },
-  { id: 'purple', name: 'Purple', hex: '#9333EA', shadowHex: '#7E22CE' },
-  { id: 'pink', name: 'Pink', hex: '#EC4899', shadowHex: '#DB2777' },
-  { id: 'cyan', name: 'Cyan', hex: '#06B6D4', shadowHex: '#0891B2' },
-  { id: 'brown', name: 'Brown', hex: '#92400E', shadowHex: '#78350F' },
-  { id: 'lime', name: 'Lime', hex: '#84CC16', shadowHex: '#65A30D' },
+  { id: 'white', name: 'White', hex: '#FFFFFF', shadowHex: '#94A3B8', strokeHex: '#475569' },
+  { id: 'black', name: 'Black', hex: '#1E293B', shadowHex: '#0F172A' },
 ];
 
 export interface GameModeConfig {

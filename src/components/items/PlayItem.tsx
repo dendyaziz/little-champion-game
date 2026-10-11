@@ -70,11 +70,12 @@ export const PlayItem: React.FC<PlayItemProps> = ({ item, onTap, layout }) => {
               />
             )}
 
-            {/* COLORS: Pure flat crisp colored shapes (NO shadows) */}
+            {/* COLORS: Pure flat crisp colored shapes (with border stroke for White) */}
             {item.kind === 'color' && item.shape && (
               <ShapeSVG
                 shape={item.shape}
                 fill={item.colorHex || item.bgColor}
+                stroke={item.strokeColor}
                 className="play-shape"
               />
             )}
