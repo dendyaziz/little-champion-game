@@ -56,6 +56,7 @@ export const COLORS: ColorDefinition[] = [
   { id: 'purple', name: 'Purple', hex: '#9333EA', shadowHex: '#7E22CE' },
   { id: 'yellow', name: 'Yellow', hex: '#EAB308', shadowHex: '#CA8A04' },
   { id: 'orange', name: 'Orange', hex: '#FF6B00', shadowHex: '#EA580C' },
+  { id: 'pink', name: 'Pink', hex: '#EC4899', shadowHex: '#DB2777' },
   { id: 'white', name: 'White', hex: '#FFFFFF', shadowHex: '#94A3B8', strokeHex: '#475569' },
   { id: 'black', name: 'Black', hex: '#1E293B', shadowHex: '#0F172A' },
 ];

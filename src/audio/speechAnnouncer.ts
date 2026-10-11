@@ -79,6 +79,7 @@ const LOCAL_AUDIO_MAP: Record<string, string> = {
   'purple': '/audio/colors/purple.mp3',
   'yellow': '/audio/colors/yellow.mp3',
   'orange': '/audio/colors/orange.mp3',
+  'pink': '/audio/colors/pink.mp3',
   'white': '/audio/colors/white.mp3',
   'black': '/audio/colors/black.mp3',
 
