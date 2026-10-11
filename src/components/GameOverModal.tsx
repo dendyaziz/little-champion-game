@@ -21,11 +21,11 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="bg-white/95 rounded-[40px] px-6 py-6 sm:px-10 sm:py-8 max-w-xl w-full shadow-2xl border-4 border-rose-300 text-center flex flex-col items-center animate-pop-in pt-0">
+    <div className="result-overlay fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Try again">
+      <div className="result-card retry-card bg-white/95 rounded-[40px] px-6 py-6 sm:px-10 sm:py-8 max-w-xl w-full shadow-2xl border-4 border-rose-300 text-center flex flex-col items-center animate-pop-in pt-0">
         
         {/* Large, detailed 3D Encouraging Heart Asset floating on top */}
-        <div className="-mt-16 sm:-mt-20 mb-3 animate-float pointer-events-none">
+        <div className="result-illustration -mt-16 sm:-mt-20 mb-3 animate-float pointer-events-none">
           <EncouragementHeart className="w-40 h-40 sm:w-48 sm:h-48 md:w-52 md:h-52" />
         </div>
 
@@ -45,12 +45,12 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
         </div>
 
         {/* Big Action Buttons (Matching Victory Modal) */}
-        <div className="flex flex-col sm:flex-row gap-3 w-full mt-2">
+        <div className="result-actions flex flex-col sm:flex-row gap-3 w-full mt-2">
           <button
             type="button"
             onClick={onRetry}
             className="
-              flex-1 py-4 px-6 rounded-2xl
+              result-primary flex-1 py-4 px-6 rounded-2xl
               bg-amber-500 text-white font-black text-xl sm:text-2xl
               shadow-[0_6px_0_0_#d97706] active:translate-y-1 active:shadow-[0_2px_0_0_#d97706]
               flex items-center justify-center gap-2.5 cursor-pointer btn-clay
@@ -64,7 +64,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
             type="button"
             onClick={onExit}
             className="
-              py-4 px-6 rounded-2xl
+              result-secondary py-4 px-6 rounded-2xl
               bg-slate-200 text-slate-700 font-bold text-xl sm:text-2xl
               shadow-[0_6px_0_0_#cbd5e1] active:translate-y-1 active:shadow-[0_2px_0_0_#cbd5e1]
               flex items-center justify-center gap-2 cursor-pointer btn-clay

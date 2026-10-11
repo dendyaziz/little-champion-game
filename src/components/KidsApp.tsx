@@ -2,84 +2,44 @@ import React, { useState, useEffect } from 'react';
 import { HomeMenu } from './HomeMenu';
 import { GameRoom } from './GameRoom';
 import { RecordsView } from './RecordsView';
+import { ParentGate } from './ParentGate';
+import { isParentPath, canonicalAppPath } from '../utils/parentAccess';
 
-interface KidsAppProps {
-  initialGameId?: string;
-  initialView?: 'home' | 'records';
-}
+interface KidsAppProps { initialGameId?: string; initialView?: 'home' | 'records'; initialPath?: string; }
 
-export const KidsApp: React.FC<KidsAppProps> = ({ initialGameId, initialView = 'home' }) => {
-  const [currentGameId, setCurrentGameId] = useState<string | null>(() => {
-    if (initialGameId) return initialGameId;
-    if (typeof window !== 'undefined') {
-      const path = window.location.pathname;
-      if (path.startsWith('/play/')) {
-        const id = path.replace('/play/', '').replace(/\/$/, '');
-        if (id) return id;
-      }
-    }
-    return null;
-  });
+export const KidsApp: React.FC<KidsAppProps> = ({ initialGameId, initialView = 'home', initialPath }) => {
+  const [path, setPath] = useState(() => canonicalAppPath(typeof window !== 'undefined'
+    ? window.location.pathname
+    : initialPath ?? (initialGameId ? `/play/${initialGameId}` : initialView === 'records' ? '/parents/records' : '/')));
+  // Memory-only: leaving the parent area or refreshing locks it again.
+  const [parentUnlocked, setParentUnlocked] = useState(false);
 
-  const [showRecords, setShowRecords] = useState<boolean>(() => {
-    if (initialView === 'records') return true;
-    if (typeof window !== 'undefined') {
-      return window.location.pathname.startsWith('/records');
-    }
-    return false;
-  });
-
-  // Handle browser back and forward button events
   useEffect(() => {
+    if (window.location.pathname !== path) window.history.replaceState(null, '', path);
     const handlePopState = () => {
-      const path = window.location.pathname;
-      if (path.startsWith('/play/')) {
-        const id = path.replace('/play/', '').replace(/\/$/, '');
-        setCurrentGameId(id || null);
-        setShowRecords(false);
-      } else if (path.startsWith('/records')) {
-        setCurrentGameId(null);
-        setShowRecords(true);
-      } else {
-        setCurrentGameId(null);
-        setShowRecords(false);
-      }
+      const next = canonicalAppPath(window.location.pathname);
+      if (!isParentPath(next)) setParentUnlocked(false);
+      if (next !== window.location.pathname) window.history.replaceState(null, '', next);
+      setPath(next);
     };
-
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // When a kid taps a mode card on the Home Menu:
-  // INSTANTANEOUS view switch (0ms delay, no browser reload, no freeze)!
-  const handleSelectMode = (modeId: string) => {
-    window.history.pushState(null, '', `/play/${modeId}`);
-    setShowRecords(false);
-    setCurrentGameId(modeId);
+  const navigate = (next: string) => {
+    const destination = canonicalAppPath(next);
+    if (!isParentPath(destination)) setParentUnlocked(false);
+    window.history.pushState(null, '', destination);
+    setPath(destination);
   };
+  const exit = () => navigate('/');
 
-  // When opening Speed Records:
-  const handleOpenRecords = () => {
-    window.history.pushState(null, '', '/records');
-    setCurrentGameId(null);
-    setShowRecords(true);
-  };
-
-  // When exiting back to home menu:
-  // INSTANTANEOUS return (0ms delay, no browser reload)!
-  const handleExitToHome = () => {
-    window.history.pushState(null, '', '/');
-    setShowRecords(false);
-    setCurrentGameId(null);
-  };
-
-  if (currentGameId) {
-    return <GameRoom gameId={currentGameId} onExit={handleExitToHome} />;
+  // Every parent route passes this boundary before mounting its contents.
+  if (isParentPath(path)) {
+    if (!parentUnlocked) return <ParentGate onUnlock={() => setParentUnlocked(true)} onCancel={exit} />;
+    if (path.replace(/\/$/, '') === '/parents/records') return <RecordsView onBackToHome={exit} />;
+    return <main className="parent-gate"><button className="utility-button" onClick={exit}>Back to games</button></main>;
   }
-
-  if (showRecords) {
-    return <RecordsView onBackToHome={handleExitToHome} />;
-  }
-
-  return <HomeMenu onSelectMode={handleSelectMode} onOpenRecords={handleOpenRecords} />;
+  if (path.startsWith('/play/')) return <GameRoom gameId={path.slice(6).replace(/\/$/, '')} onExit={exit} />;
+  return <HomeMenu onSelectMode={(id) => navigate(`/play/${id}`)} onOpenRecords={() => navigate('/parents/records')} />;
 };

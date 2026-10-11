@@ -45,15 +45,15 @@ export const HUD: React.FC<HUDProps> = ({
         />
       </div>
 
-      <header className="relative z-20 w-full px-4 sm:px-8 py-3 flex items-center justify-between gap-4 select-none pointer-events-auto">
+      <header className="game-hud select-none">
         
-        {/* Left controls: Home & Sound (Unboxed, floating icons) */}
-        <div className="flex items-center gap-1">
+        {/* Clear, tactile navigation controls; answers remain unboxed. */}
+        <div className="hud-controls">
           <button
             type="button"
             onClick={onExit}
             aria-label="Back to Menu"
-            className="w-12 h-12 flex items-center justify-center text-slate-700 hover:text-slate-900 active:scale-90 transition-transform cursor-pointer drop-shadow-sm focus:outline-none"
+            className="hud-button"
           >
             <Home className="w-8 h-8 stroke-[2.5]" />
           </button>
@@ -62,7 +62,7 @@ export const HUD: React.FC<HUDProps> = ({
             type="button"
             onClick={onToggleMute}
             aria-label={isMuted ? 'Unmute Sound' : 'Mute Sound'}
-            className="w-12 h-12 flex items-center justify-center text-slate-700 hover:text-slate-900 active:scale-90 transition-transform cursor-pointer drop-shadow-sm focus:outline-none"
+            className={`hud-button ${isMuted ? 'is-muted' : ''}`}
           >
             {isMuted ? (
               <VolumeX className="w-8 h-8 stroke-[2.5] text-rose-500" />
@@ -74,7 +74,7 @@ export const HUD: React.FC<HUDProps> = ({
 
         {/* Center: ONLY the target item to find, playfully wiggling (NO badges, NO counts) */}
         {gameType === 'pick' ? (
-          <div className="flex items-center justify-center pointer-events-none">
+          <div className="hud-target flex items-center justify-center pointer-events-none">
             {targetShape && (
               <div className="animate-wiggle">
                 <ShapeSVG shape={targetShape} fill="#F59E0B" className="w-12 h-12 sm:w-14 sm:h-14 drop-shadow-sm" />
@@ -102,7 +102,7 @@ export const HUD: React.FC<HUDProps> = ({
         )}
 
         {/* Right: 5 Hearts only (Clean, focused) */}
-        <div className="flex items-center gap-1 sm:gap-1.5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]">
+        <div className="hud-hearts flex items-center gap-1 sm:gap-1.5" aria-label={`${hearts} hearts remaining`}>
           {Array.from({ length: maxHearts }).map((_, idx) => {
             const hasHeart = idx < hearts;
             return (
@@ -110,7 +110,7 @@ export const HUD: React.FC<HUDProps> = ({
                 key={idx}
                 className={`w-7 h-7 sm:w-8 sm:h-8 transition-all duration-300 ${
                   hasHeart
-                    ? 'text-rose-500 fill-rose-500 scale-100 animate-pulse'
+                    ? 'text-rose-500 fill-rose-500 scale-100'
                     : 'text-slate-300/80 fill-slate-300/60 scale-90'
                 }`}
               />

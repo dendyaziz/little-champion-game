@@ -51,7 +51,7 @@ export const VictoryModal: React.FC<VictoryModalProps> = ({
       announcer.cheer();
     }
 
-    confetti({
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) confetti({
       particleCount: isNewBest ? 120 : 90,
       spread: isNewBest ? 90 : 75,
       origin: { y: 0.55 },
@@ -68,11 +68,11 @@ export const VictoryModal: React.FC<VictoryModalProps> = ({
   }, [gameId, stars, isNewBest]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="bg-white/95 rounded-[40px] px-6 py-6 sm:px-10 sm:py-8 max-w-xl w-full shadow-2xl border-4 border-amber-300 text-center flex flex-col items-center animate-pop-in pt-0">
+    <div className="result-overlay fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Game complete">
+      <div className="result-card victory-card bg-white/95 rounded-[40px] px-6 py-6 sm:px-10 sm:py-8 max-w-xl w-full shadow-2xl border-4 border-amber-300 text-center flex flex-col items-center animate-pop-in pt-0">
         
         {/* Large, detailed 3D Champion Trophy Asset floating on top */}
-        <div className="-mt-16 sm:-mt-20 mb-2 animate-float pointer-events-none">
+        <div className="result-illustration -mt-16 sm:-mt-20 mb-2 animate-float pointer-events-none">
           <ChampionTrophy className="w-40 h-40 sm:w-48 sm:h-48 md:w-52 md:h-52" />
         </div>
 
@@ -90,7 +90,7 @@ export const VictoryModal: React.FC<VictoryModalProps> = ({
             </div>
 
             {isNewBest && (
-              <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-amber-400 text-amber-950 font-black text-base sm:text-lg font-['Fredoka'] shadow-sm animate-bounce">
+              <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-amber-400 text-amber-950 font-black text-base sm:text-lg font-['Fredoka'] shadow-sm">
                 <Zap className="w-5 h-5 fill-amber-950 stroke-[2.5]" />
                 <span>NEW RECORD!</span>
               </div>
@@ -99,12 +99,12 @@ export const VictoryModal: React.FC<VictoryModalProps> = ({
         )}
 
         {/* Big Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3 w-full mt-2">
+        <div className="result-actions flex flex-col sm:flex-row gap-3 w-full mt-2">
           <button
             type="button"
             onClick={onPlayAgain}
             className="
-              flex-1 py-4 px-6 rounded-2xl
+              result-primary flex-1 py-4 px-6 rounded-2xl
               bg-emerald-500 text-white font-black text-xl sm:text-2xl
               shadow-[0_6px_0_0_#059669] active:translate-y-1 active:shadow-[0_2px_0_0_#059669]
               flex items-center justify-center gap-2.5 cursor-pointer btn-clay
@@ -118,7 +118,7 @@ export const VictoryModal: React.FC<VictoryModalProps> = ({
             type="button"
             onClick={onExit}
             className="
-              py-4 px-6 rounded-2xl
+              result-secondary py-4 px-6 rounded-2xl
               bg-slate-200 text-slate-700 font-bold text-xl sm:text-2xl
               shadow-[0_6px_0_0_#cbd5e1] active:translate-y-1 active:shadow-[0_2px_0_0_#cbd5e1]
               flex items-center justify-center gap-2 cursor-pointer btn-clay

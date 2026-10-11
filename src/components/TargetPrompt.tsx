@@ -53,7 +53,7 @@ export const TargetPrompt: React.FC<TargetPromptProps> = ({ roundData, onStart }
   return (
     <div
       onClick={handleManualSkip}
-      className={`fixed inset-0 z-50 bg-white/92 backdrop-blur-2xl flex flex-col items-center justify-center p-6 cursor-pointer select-none transition-opacity duration-300 ${
+      className={`target-prompt fixed inset-0 z-50 bg-white/92 backdrop-blur-2xl flex flex-col items-center justify-center p-6 cursor-pointer select-none transition-opacity duration-300 ${
         isExiting ? 'opacity-0' : 'opacity-100'
       }`}
     >
@@ -67,7 +67,7 @@ export const TargetPrompt: React.FC<TargetPromptProps> = ({ roundData, onStart }
           <ShapeSVG
             shape={roundData.targetShape}
             fill="#F59E0B"
-            className="w-72 h-72 sm:w-96 sm:h-96 md:w-[420px] md:h-[420px] drop-shadow-md"
+            className="prompt-shape"
           />
         )}
 
@@ -75,13 +75,14 @@ export const TargetPrompt: React.FC<TargetPromptProps> = ({ roundData, onStart }
           <ShapeSVG
             shape="circle"
             fill={roundData.targetColor.hex}
-            className="w-72 h-72 sm:w-96 sm:h-96 md:w-[420px] md:h-[420px] drop-shadow-md"
+            className="prompt-shape"
           />
         )}
 
         {(roundData.targetKind === 'number' || roundData.targetKind === 'letter') && (
           <span
-            className="text-[260px] sm:text-[340px] md:text-[420px] font-black font-['Fredoka'] select-none leading-none tracking-normal drop-shadow-md"
+            className="prompt-glyph font-black font-['Fredoka'] select-none leading-none tracking-normal"
+            data-wide={(roundData.targetValue?.length || 0) > 1}
             style={{
               color: '#F59E0B',
             }}

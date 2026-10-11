@@ -4,7 +4,7 @@ import { generateRound, type RoundData } from '../utils/roundGenerator';
 import { calculateStars } from '../utils/scoring';
 import { addSpeedRecord } from '../utils/recordsStore';
 import { HUD } from './HUD';
-import { PlayItem } from './items/PlayItem';
+import { Playfield } from './Playfield';
 import { TargetPrompt } from './TargetPrompt';
 import { VictoryModal } from './VictoryModal';
 import { GameOverModal } from './GameOverModal';
@@ -251,14 +251,10 @@ export const GameRoom: React.FC<GameRoomProps> = ({ gameId, onExit }) => {
   };
 
   return (
-    <main className="fixed inset-0 w-screen h-screen overflow-hidden flex flex-col bg-gradient-to-b from-sky-200 via-sky-100 to-amber-50 select-none">
+    <main className="game-room select-none">
       
       {/* Playful Floating Decorative Clouds Background */}
-      <div className="absolute inset-0 pointer-events-none opacity-45 overflow-hidden">
-        <div className="absolute top-10 left-12 w-48 h-24 bg-white/80 rounded-full blur-xs animate-float" style={{ '--rot': '-2deg' } as React.CSSProperties} />
-        <div className="absolute top-32 right-16 w-60 h-28 bg-white/80 rounded-full blur-xs animate-float" style={{ '--rot': '3deg' } as React.CSSProperties} />
-        <div className="absolute bottom-16 left-1/4 w-80 h-32 bg-white/70 rounded-full blur-xs animate-float" style={{ '--rot': '1deg' } as React.CSSProperties} />
-      </div>
+      <div className="sky-scenery" aria-hidden="true"><i /><i /><i /></div>
 
       {/* Top HUD */}
       <HUD
@@ -278,11 +274,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({ gameId, onExit }) => {
       />
 
       {/* Fully Immersive Playfield - Bleeds edge to edge with NO inner box! */}
-      <div className="relative flex-1 w-full h-full overflow-hidden">
-        {items.map((item) => (
-          <PlayItem key={item.id} item={item} onTap={handleTap} />
-        ))}
-      </div>
+      <Playfield items={items} onTap={handleTap} />
 
       {/* Target Prompt Modal (Only for Pick games, unboxed) */}
       {gameState === 'prompt' && currentRoundData && (

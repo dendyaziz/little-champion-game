@@ -15,7 +15,8 @@ The user has very specific, non-negotiable UI/UX standards tailored for non-read
 1. **KIDS DO NOT READ — ZERO UNNECESSARY TEXT**:
    - **Never add paragraphs, instructions, subtitles, or celebratory text banners** like *"Super Job!"*, *"Pick Number Completed!"*, *"Awesome Try! You scored X points"*, or *"Find 7"* in the game UI, modals, or prompts.
    - Communication with the child happens through **large unboxed visual icons** + **instant voice narration**.
-   - On the **Homepage** ([`src/components/HomeMenu.tsx`](src/components/HomeMenu.tsx)): Do **NOT** add a top app logo, app title (`<h1>`), or subtitle description. Keep the top navbar ultra-short (`py-1 mb-2`) containing only the **Records** button and **Sound Mute** toggle so the game cards sit immediately at the top of the screen.
+   - On the **Homepage** ([`src/components/HomeMenu.tsx`](src/components/HomeMenu.tsx)): Do **NOT** add a top app logo, app title (`<h1>`), or subtitle description. The toolbar contains only **Records** and **Sound Mute**, matching the in-game control size (52px phone, 64px tablet). Center the menu grid vertically when it fits, balancing toolbar space below it; tall mobile menus scroll.
+   - **Home scenery**: Simple flat 2D, solid balanced colors, mostly white negative space. A small complete playground scene belongs below the menu, not enlarged/cropped behind the cards. More objects must not mean more texture, shading, 3D detail, or center clutter.
 
 2. **UNBOXED, EDGE-TO-EDGE IMMERSIVE ELEMENTS (NO INNER BOXES / CONTAINERS)**:
    - **Playfield**: Items float directly on the full-screen sky gradient playfield (`w-screen h-screen`). Never wrap the playfield or items inside a bordered card or box.
@@ -34,18 +35,19 @@ The user has very specific, non-negotiable UI/UX standards tailored for non-read
      - Round 3 (2 completed): **`66.67%`** (`2/3`)
      - All 3 Rounds Completed (`isCompleted = true`): Animates smoothly to **`100%`** concurrently while the Champion modal pops up (`z-[60]` keeps the bar visible above the `z-50` modal backdrop).
    - **HUD Center**: Show **ONLY** the target item to find in the middle with a continuous wiggle animation (`animate-wiggle`). **Never** show a badge telling how many target items remain.
-   - **HUD Left & Right**: Left has unboxed floating Home & Mute icons; Right has the 5 Hearts.
+   - **HUD Left & Right**: Left has large tactile Home & Mute buttons (the user's updated preference); Right has the 5 Hearts. Answer items and the center target remain unboxed.
 
 4. **SHAPES, COLORS & SPATIAL LAYOUT** ([`src/utils/gameModes.ts`](src/utils/gameModes.ts), [`src/utils/roundGenerator.ts`](src/utils/roundGenerator.ts), [`src/components/items/ShapeSVG.tsx`](src/components/items/ShapeSVG.tsx)):
    - **Allowed 8 Shapes ONLY**: `square`, `rectangle` (wide long square), `triangle` (sharp clean corners, not overly rounded), `rhombus`, `heart`, `star`, `circle`, `oval`.
    - **Find Color Target Display**: When prompting or showing the target color in the HUD/Prompt for **Find Color**, **ALWAYS render the target color as a `circle`**, never as a star or random shape, so kids focus purely on the color rather than the shape.
    - **10 Distinct High-Contrast Colors**: Defined in `COLORS` and `ITEM_COLORS` (Yellow is darkened to `#EAB308` / `#CA8A04` so it always has high contrast against the bright sky background).
    - **No Duplicate Distractor Colors/Items Before Exhaustion**: Every round shuffles the full pool of distinct colors/distractors before repeating any color.
-   - **4×3 Jittered Grid Placement + Varied Scales**: Items are placed on a 4×3 grid with slight random position jitter and dramatic scale variation (`0.72x` to `1.42x`) so items never collide or overlap.
+   - **Responsive Jittered Grid + Varied Scales**: The generator retains its random slots; the presentation layer fits them to measured usable space. Prefer 3 columns on portrait phones and 4/5 on landscape tablets, adapting to available height. Keep visible glyphs and disjoint touch areas inside cells, with bounded jitter/tilt/size variety. Do not repack remaining items after a pop or regenerate game content during resize.
    - **Animation Layer Isolation**: In [`PlayItem.tsx`](src/components/items/PlayItem.tsx), `animate-pop-in` MUST remain on its own persistent outer wrapper `<div>`, while `animate-shake` and `animate-pop-out` live on an inner `<div>`. Never put `animate-pop-in` and `animate-shake` on the same element (otherwise finishing a shake re-triggers the entrance fade-in).
 
 5. **ZERO PAGE RELOADS (SPA ARCHITECTURE)**:
-   - Navigation between Home (`/`), Games (`/play/:gameId`), and Records (`/records`) is handled client-side via [`src/components/KidsApp.tsx`](src/components/KidsApp.tsx) using `window.history.pushState`. Never use full-page reload links that cause a freeze or cut off audio playback.
+   - Navigation between Home (`/`), Games (`/play/:gameId`), and Records (`/parents/records`) is handled client-side via [`src/components/KidsApp.tsx`](src/components/KidsApp.tsx) using `window.history.pushState`. Never use full-page reload links that cause a freeze or cut off audio playback.
+   - All parent-area pages must render through `KidsApp` and its shared `/parents` route boundary. `ParentGate` asks for three digits displayed as English words (no spoken challenge). Access is memory-only and resets on leaving the parent area or refreshing. `/records` is a compatibility alias for the gated route. This is a child deterrent, not authentication or protection for sensitive data.
 
 ---
 
@@ -100,7 +102,7 @@ Defined in [`src/utils/gameModes.ts`](src/utils/gameModes.ts) and generated in [
 - Every completed 3-round game saves a `SpeedRecordEntry` (`id`, `gameId`, `durationMs`, `durationSeconds`, `timestamp` ISO string, `stars`) to `localStorage` (`kids_speed_records_v1`).
 - Durations are formatted naturally: e.g., **`56 seconds`** or **`1 minute 24 seconds`**.
 - **Records Dashboard (`/records`)**:
-  - **Overview**: Shows all 8 games with their **Best Time** and the exact **datetime** it was achieved.
+  - **Overview**: Shows the 8 large unboxed game illustrations, names, best completion times, and open-history arrows. Keep dates, trophy badges, record counts, and empty-record messages off this selector; show full record data in the detail view.
   - **Game Detail View**: Clicking any game displays an **SVG Historical Speed Graph** (chronological runs `#1..#N`, highlighting the fastest run in gold) and a **History Log** where each entry has a **Delete (Trash) button** so parents can remove accidental adult entries (which immediately recalculates the game's Best Time).
 
 ---

@@ -5,9 +5,10 @@ import { ShapeSVG } from './ShapeSVG';
 interface PlayItemProps {
   item: GameItem;
   onTap: (item: GameItem) => void;
+  layout: { x: number; y: number; side: number };
 }
 
-export const PlayItem: React.FC<PlayItemProps> = ({ item, onTap }) => {
+export const PlayItem: React.FC<PlayItemProps> = ({ item, onTap, layout }) => {
   if (item.isPopped) {
     return null;
   }
@@ -18,7 +19,8 @@ export const PlayItem: React.FC<PlayItemProps> = ({ item, onTap }) => {
     onTap(item);
   };
 
-  const scale = item.scale || 1.0;
+  // Preserve relative size variety while fitting even the largest glyph to its touch area.
+  const scale = 1 + ((item.scale || 1) - 1) * 0.35;
 
   return (
     <button
@@ -26,17 +28,19 @@ export const PlayItem: React.FC<PlayItemProps> = ({ item, onTap }) => {
       onClick={handleClick}
       aria-label={`Item ${item.value}`}
       style={{
-        left: `${item.x}%`,
-        top: `${item.y}%`,
+        left: layout.x,
+        top: layout.y,
+        width: layout.side,
+        height: layout.side,
+        '--shape-size': `${layout.side * 0.64}px`,
         transform: 'translate(-50%, -50%)',
-      }}
+      } as React.CSSProperties}
       className={`
         absolute z-10
-        w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52
         flex items-center justify-center
         bg-transparent border-0 outline-none
         cursor-pointer select-none touch-manipulation
-        focus:outline-none -m-4 p-4
+        play-item p-0
         ${item.isPopping ? 'pointer-events-none' : ''}
       `}
     >
@@ -54,9 +58,7 @@ export const PlayItem: React.FC<PlayItemProps> = ({ item, onTap }) => {
         >
           {/* Inner tilt and scale layer: clean, crisp, flat with NO shadows */}
           <div
-            style={{
-              transform: `rotate(${item.rotation}deg) scale(${scale})`,
-            }}
+            style={{ transform: `rotate(${item.rotation}deg) scale(${scale})` }}
             className="flex items-center justify-center"
           >
             {/* SHAPES: Pure flat crisp SVG (NO shadows) */}
@@ -64,7 +66,7 @@ export const PlayItem: React.FC<PlayItemProps> = ({ item, onTap }) => {
               <ShapeSVG
                 shape={item.shape}
                 fill={item.bgColor}
-                className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36"
+                className="play-shape"
               />
             )}
 
@@ -73,16 +75,17 @@ export const PlayItem: React.FC<PlayItemProps> = ({ item, onTap }) => {
               <ShapeSVG
                 shape={item.shape}
                 fill={item.colorHex || item.bgColor}
-                className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36"
+                className="play-shape"
               />
             )}
 
             {/* NUMBERS & LETTERS: Pure solid flat bold glyph (NO text-shadow) */}
             {(item.kind === 'number' || item.kind === 'letter') && (
               <span
-                className="font-black text-7xl sm:text-8xl md:text-9xl select-none font-['Fredoka'] leading-none tracking-normal"
+                className="font-black select-none font-['Fredoka'] leading-none tracking-normal"
                 style={{
                   color: item.textColor || item.bgColor,
+                  fontSize: layout.side * (item.value.length > 1 ? 0.52 : 0.60),
                 }}
               >
                 {item.value}
