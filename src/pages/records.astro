@@ -1,0 +1,8 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { KidsApp } from '../components/KidsApp';
+---
+
+<Layout title="Speed Records - Little Champion">
+  <KidsApp initialView="records" client:only="react" />
+</Layout>

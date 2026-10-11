@@ -1,0 +1,195 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-heading: 'Fredoka', 'Baloo 2', system-ui, -apple-system, sans-serif;
+    --font-game: 'Fredoka', 'Baloo 2', system-ui, sans-serif;
+  }
+
+  html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    font-family: var(--font-heading);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+    background-color: #e0f2fe;
+    overflow-x: hidden;
+  }
+}
+
+/* Tactile 3D Claymorphic Push Buttons */
+.btn-clay {
+  transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform, box-shadow;
+}
+
+.btn-clay:active {
+  transform: translateY(4px) scale(0.97) !important;
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Playful Pop / Jiggle Keyframe Animations */
+@keyframes popIn {
+  0% {
+    transform: scale(0.3) rotate(-10deg);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.15) rotate(4deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes popOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1.3) rotate(8deg);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(0) rotate(-15deg);
+    opacity: 0;
+  }
+}
+
+@keyframes shakeWobble {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-14px); }
+  40% { transform: translateX(14px); }
+  60% { transform: translateX(-10px); }
+  80% { transform: translateX(6px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 25px 8px rgba(245, 158, 11, 0.7);
+    transform: scale(1.04);
+  }
+}
+
+@keyframes floatIdle {
+  0%, 100% {
+    transform: translateY(0px) rotate(var(--rot, 0deg));
+  }
+  50% {
+    transform: translateY(-6px) rotate(var(--rot, 0deg));
+  }
+}
+
+@keyframes targetPromptIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes targetPromptOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  30% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+}
+
+.animate-target-in {
+  animation: targetPromptIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-target-out {
+  animation: targetPromptOut 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-pop-in {
+  animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-pop-out {
+  animation: popOut 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-shake {
+  animation: shakeWobble 0.4s ease-in-out;
+}
+
+.animate-glow {
+  animation: pulseGlow 1.8s infinite ease-in-out;
+}
+
+.animate-float {
+  animation: floatIdle 3s ease-in-out infinite;
+}
+
+@keyframes wiggleSlow {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  20% {
+    transform: rotate(-12deg) scale(1.12);
+  }
+  40% {
+    transform: rotate(10deg) scale(1.12);
+  }
+  60% {
+    transform: rotate(-8deg) scale(1.06);
+  }
+  80% {
+    transform: rotate(6deg) scale(1.03);
+  }
+}
+
+.animate-wiggle {
+  animation: wiggleSlow 1.4s ease-in-out infinite;
+  display: inline-block;
+  transform-origin: center center;
+}
+
+/* Custom soft scrollbar if ever needed */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}

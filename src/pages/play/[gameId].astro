@@ -1,0 +1,19 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { KidsApp } from '../../components/KidsApp';
+import { GAME_MODES } from '../../utils/gameModes';
+
+export function getStaticPaths() {
+  return GAME_MODES.map((mode) => ({
+    params: { gameId: mode.id },
+    props: { mode },
+  }));
+}
+
+const { gameId } = Astro.params;
+const { mode } = Astro.props;
+---
+
+<Layout title={`${mode.title} - Little Champion`}>
+  <KidsApp client:only="react" initialGameId={gameId} />
+</Layout>
