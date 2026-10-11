@@ -13,6 +13,7 @@ interface HUDProps {
   targetValue?: string;
   targetShape?: ShapeType;
   targetColor?: ColorDefinition;
+  targetDisplayColor?: string;
   targetsRemaining?: number;
   isMuted: boolean;
   onToggleMute: () => void;
@@ -28,6 +29,7 @@ export const HUD: React.FC<HUDProps> = ({
   targetValue,
   targetShape,
   targetColor,
+  targetDisplayColor,
   isMuted,
   onToggleMute,
   onExit,
@@ -77,7 +79,7 @@ export const HUD: React.FC<HUDProps> = ({
           <div className="hud-target flex items-center justify-center pointer-events-none">
             {targetShape && (
               <div className="animate-wiggle">
-                <ShapeSVG shape={targetShape} fill="#F59E0B" className="w-12 h-12 sm:w-14 sm:h-14 drop-shadow-sm" />
+                <ShapeSVG shape={targetShape} fill={targetDisplayColor || '#F59E0B'} className="w-12 h-12 sm:w-14 sm:h-14 drop-shadow-sm" />
               </div>
             )}
             {targetColor && (
@@ -93,7 +95,7 @@ export const HUD: React.FC<HUDProps> = ({
             {targetValue && !targetShape && !targetColor && (
               <span
                 className="font-black text-5xl sm:text-6xl font-['Fredoka'] leading-none animate-wiggle inline-block drop-shadow-sm select-none"
-                style={{ color: '#EA580C' }}
+                style={{ color: targetDisplayColor || '#EA580C' }}
               >
                 {targetValue}
               </span>

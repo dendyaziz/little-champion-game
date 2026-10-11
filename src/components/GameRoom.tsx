@@ -267,6 +267,7 @@ export const GameRoom: React.FC<GameRoomProps> = ({ gameId, onExit }) => {
         targetShape={currentRoundData?.targetShape}
         targetColor={currentRoundData?.targetColor}
         targetValue={currentRoundData?.targetValue}
+        targetDisplayColor={currentRoundData?.targetDisplayColor}
         targetsRemaining={modeConfig.type === 'pick' ? remainingTargets : undefined}
         isMuted={isMuted}
         onToggleMute={handleToggleMute}

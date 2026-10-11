@@ -66,7 +66,7 @@ export const TargetPrompt: React.FC<TargetPromptProps> = ({ roundData, onStart }
         {roundData.targetKind === 'shape' && roundData.targetShape && (
           <ShapeSVG
             shape={roundData.targetShape}
-            fill="#F59E0B"
+            fill={roundData.targetDisplayColor || '#F59E0B'}
             className="prompt-shape"
           />
         )}
@@ -85,7 +85,7 @@ export const TargetPrompt: React.FC<TargetPromptProps> = ({ roundData, onStart }
             className="prompt-glyph font-black font-['Fredoka'] select-none leading-none tracking-normal"
             data-wide={(roundData.targetValue?.length || 0) > 1}
             style={{
-              color: '#F59E0B',
+              color: roundData.targetDisplayColor || '#EA580C',
             }}
           >
             {roundData.targetValue}

@@ -10,6 +10,7 @@ export interface RoundData {
   targetKind: 'number' | 'letter' | 'shape' | 'color';
   targetShape?: ShapeType;
   targetColor?: ColorDefinition;
+  targetDisplayColor?: string;
   targetCount: number; // number of targets to find in this round
 }
 
@@ -193,12 +194,15 @@ export function generateRound(
         };
       });
 
+      const targetDisplayColor = ITEM_COLORS[Math.floor(Math.random() * ITEM_COLORS.length)].bg;
+
       return {
         roundNumber,
         items,
         targetValue: targetNumber,
         targetPrompt: `Find ${targetNumber}!`,
         targetKind: 'number',
+        targetDisplayColor,
         targetCount,
       };
     }
@@ -313,12 +317,15 @@ export function generateRound(
         };
       });
 
+      const targetDisplayColor = ITEM_COLORS[Math.floor(Math.random() * ITEM_COLORS.length)].bg;
+
       return {
         roundNumber,
         items,
         targetValue: targetLetter,
         targetPrompt: `Find ${targetLetter}!`,
         targetKind: 'letter',
+        targetDisplayColor,
         targetCount,
       };
     }
@@ -368,6 +375,8 @@ export function generateRound(
         };
       });
 
+      const targetDisplayColor = ITEM_COLORS[Math.floor(Math.random() * ITEM_COLORS.length)].bg;
+
       return {
         roundNumber,
         items,
@@ -375,6 +384,7 @@ export function generateRound(
         targetShape: targetShapeDef.id,
         targetPrompt: `Find ${targetShapeDef.name}!`,
         targetKind: 'shape',
+        targetDisplayColor,
         targetCount,
       };
     }
