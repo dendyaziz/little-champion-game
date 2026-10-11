@@ -232,7 +232,7 @@ body { background: #fff; color: var(--ink); }
 button, a { -webkit-tap-highlight-color: transparent; }
 button:focus-visible, a:focus-visible { outline: 3px solid #0284c7; outline-offset: 4px; }
 .home-menu { position: relative; isolation: isolate; min-height: 100dvh; padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); background: #fff; }
-.home-menu::after { content: ''; display: block; flex: 0 0 74px; }
+.home-menu::after { content: ''; display: block; flex: 1 1 0px; max-height: 74px; }
 .home-menu .menu-scenery { position: absolute; background: #fff; }
 /* Separate edge anchors preserve the artwork's aspect ratio on tall phone menus. */
 .home-menu .menu-scenery::before, .home-menu .menu-scenery::after { content: ''; position: absolute; inset: 0; background-image: url('/images/menu-playground-geometric-v3.webp'); background-size: 100% auto; background-repeat: no-repeat; }
@@ -376,7 +376,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid #0284c7; outline-offs
   .home-toolbar .sound-button { width: 64px; }
   .home-toolbar .utility-button svg { width: 36px; height: 36px; }
   .home-toolbar .records-link { font-size: 20px; padding-inline: 22px; }
-  .home-menu::after { flex-basis: 86px; }
+  .home-menu::after { max-height: 86px; }
 }
 @media (min-width: 960px) {
   .home-menu .mode-card { min-height: clamp(240px, calc((100dvh - 242px) / 2), 290px); padding: 20px 16px; }
