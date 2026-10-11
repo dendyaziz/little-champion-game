@@ -1,5 +1,5 @@
-import { SHAPES, COLORS, type GameItem, type ShapeType, type ColorDefinition } from './gameModes';
-import { generatePlacements, ITEM_COLORS } from './placement';
+import { SHAPES, COLORS, type GameItem, type ShapeType, type ColorDefinition } from './gameModes.ts';
+import { generatePlacements, ITEM_COLORS } from './placement.ts';
 
 export interface RoundData {
   roundNumber: number;
@@ -212,24 +212,84 @@ export function generateRound(
           : gameId === 'pick-letter-mz'
           ? 'MNOPQRSTUVWXYZ'.split('')
           : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-      const candidates = allLetters.filter((l) => !previousTargets.includes(l));
+
+      // Avoid repeating letter targets from previous rounds in the same game (case-insensitive)
+      const candidates = allLetters.filter(
+        (l) => !previousTargets.some((prev) => prev.toUpperCase() === l.toUpperCase())
+      );
       const available = candidates.length > 0 ? candidates : allLetters;
-      const targetLetter = available[Math.floor(Math.random() * available.length)];
+      const baseTargetLetter = available[Math.floor(Math.random() * available.length)];
       const targetCount = Math.floor(Math.random() * 3) + 3; // 3, 4, or 5
-      const otherLetters = allLetters.filter((l) => l !== targetLetter);
+      const otherLetters = allLetters.filter((l) => l.toUpperCase() !== baseTargetLetter.toUpperCase());
       const distractorCount = 12 - targetCount;
 
+      // Determine target letter and capitalization:
+      // Round 1: All uppercase
+      // Round 2: All lowercase
+      // Round 3: Random uppercase/lowercase, avoiding ambiguous stick shapes (uppercase 'I' vs lowercase 'l')
+      let targetLetter: string;
+      if (roundNumber === 1) {
+        targetLetter = baseTargetLetter.toUpperCase();
+      } else if (roundNumber === 2) {
+        targetLetter = baseTargetLetter.toLowerCase();
+      } else {
+        // Round 3
+        if (baseTargetLetter === 'I') {
+          // In mixed round 3, render as lowercase 'i' (with dot) to avoid looking like lowercase 'l' (|)
+          targetLetter = 'i';
+        } else if (baseTargetLetter === 'L') {
+          // Render as uppercase 'L' (with horizontal foot) to avoid looking like uppercase 'I' (|)
+          targetLetter = 'L';
+        } else {
+          targetLetter = Math.random() < 0.5 ? baseTargetLetter.toUpperCase() : baseTargetLetter.toLowerCase();
+        }
+      }
+
+      // Matching target items: all must match the chosen target letter capitalization
       const rawItems: Array<{ value: string; isTarget: boolean }> = [];
       for (let i = 0; i < targetCount; i++) {
         rawItems.push({ value: targetLetter, isTarget: true });
       }
+
       // Guarantee each distractor letter is distinct before repeating
       const distractorLetters: string[] = [];
       while (distractorLetters.length < distractorCount) {
         distractorLetters.push(...shuffle(otherLetters));
       }
-      for (let i = 0; i < distractorCount; i++) {
-        rawItems.push({ value: distractorLetters[i], isTarget: false });
+
+      // Distractor items capitalization:
+      // Round 1: All uppercase
+      // Round 2: All lowercase
+      // Round 3: Mixed uppercase/lowercase, avoiding uppercase 'I' and lowercase 'l'
+      if (roundNumber === 1) {
+        for (let i = 0; i < distractorCount; i++) {
+          rawItems.push({ value: distractorLetters[i].toUpperCase(), isTarget: false });
+        }
+      } else if (roundNumber === 2) {
+        for (let i = 0; i < distractorCount; i++) {
+          rawItems.push({ value: distractorLetters[i].toLowerCase(), isTarget: false });
+        }
+      } else {
+        // Round 3: Balanced mix of uppercase and lowercase
+        const half = Math.floor(distractorCount / 2);
+        const distractorCaseMask = shuffle(
+          Array.from({ length: distractorCount }, (_, idx) => idx < half) // true = upper, false = lower
+        );
+
+        for (let i = 0; i < distractorCount; i++) {
+          const l = distractorLetters[i];
+          let val: string;
+          if (l === 'I') {
+            // Avoid uppercase 'I' in mixed round 3
+            val = 'i';
+          } else if (l === 'L') {
+            // Avoid lowercase 'l' in mixed round 3
+            val = 'L';
+          } else {
+            val = distractorCaseMask[i] ? l.toUpperCase() : l.toLowerCase();
+          }
+          rawItems.push({ value: val, isTarget: false });
+        }
       }
 
       const shuffled = shuffle(rawItems);
